@@ -1,30 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/badge.css';
 
 /**
- * FacebookVerifiedBadge Component
- * A reusable React component that displays an official-looking Facebook verified badge
+ * Official FacebookVerifiedBadge Component
+ * A premium React component with official Facebook styling, white border, and hover effects
  * 
  * @param {Object} props - Component props
  * @param {string} props.size - Badge size: 'small' | 'medium' | 'large' | 'extra-large' (default: 'medium')
- * @param {string} props.tooltip - Tooltip text displayed on hover (default: 'Verified Account')
+ * @param {string} props.tooltip - Tooltip text displayed on hover
  * @param {boolean} props.withText - Display text next to badge (default: false)
- * @param {string} props.text - Text to display next to badge (default: 'Verified')
+ * @param {string} props.text - Text to display next to badge
  * @param {function} props.onClick - Click handler callback
+ * @param {boolean} props.animated - Enable hover animation (default: true)
  * @param {string} props.className - Additional CSS classes
  * @param {string} props.ariaLabel - Accessibility label
- * 
- * @example
- * // Basic usage
- * <FacebookVerifiedBadge />
- * 
- * @example
- * // With custom size and tooltip
- * <FacebookVerifiedBadge size="large" tooltip="Meta Verified" />
- * 
- * @example
- * // With text
- * <FacebookVerifiedBadge withText text="Verified Account" />
  */
 const FacebookVerifiedBadge = ({
   size = 'medium',
@@ -32,22 +21,33 @@ const FacebookVerifiedBadge = ({
   withText = false,
   text = 'Verified',
   onClick = null,
+  animated = true,
   className = '',
   ariaLabel = 'Verified badge'
 }) => {
-  const badgeClasses = `fb-verified-badge ${size} ${className}`.trim();
+  const [isHovering, setIsHovering] = useState(false);
+
+  const badgeClasses = `
+    fb-verified-badge-official 
+    ${size} 
+    ${animated ? 'animated' : ''} 
+    ${isHovering ? 'hovering' : ''} 
+    ${className}
+  `.trim();
 
   const badge = (
     <span
       className={badgeClasses}
       data-tooltip={tooltip}
       onClick={onClick}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       role="img"
       aria-label={ariaLabel}
       title={tooltip}
     >
       <svg
-        className="fb-checkmark"
+        className="fb-checkmark-official"
         viewBox="0 0 24 24"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ const FacebookVerifiedBadge = ({
 
   if (withText) {
     return (
-      <div className="fb-badge-with-text">
+      <div className="fb-badge-with-text-official">
         {badge}
         <span className="text">{text}</span>
       </div>
